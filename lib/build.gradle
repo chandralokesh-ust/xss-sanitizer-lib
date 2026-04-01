@@ -26,6 +26,8 @@ dependencies {
     // Internal dependency
     implementation 'com.google.guava:guava:32.1.3-jre'
 
+    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20260101.1'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
