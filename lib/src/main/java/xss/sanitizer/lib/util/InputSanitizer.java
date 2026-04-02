@@ -1,8 +1,6 @@
 package xss.sanitizer.lib.util;
 
 
-import xss.sanitizer.lib.exception.XSSViolationException;
-
 public class InputSanitizer {
 
     public static String sanitize(String input) {
@@ -12,9 +10,8 @@ public class InputSanitizer {
         }
         // Block any HTML tags
         if (input.matches(".*<.*>.*")) {
-            throw new XSSViolationException(
-                    "Invalid input detected. HTML or script content is not allowed."
-            );
+            throw new IllegalArgumentException(
+                    "Invalid input detected. HTML or script content is not allowed.");
         }
         return input;
     }

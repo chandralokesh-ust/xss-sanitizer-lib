@@ -15,15 +15,9 @@ import java.time.LocalDateTime;
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(
-            HttpMessageNotReadableException ex,
-            HttpHeaders headers,
-            HttpStatus status,
-            WebRequest request) {
-
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Throwable rootCause = ex.getMostSpecificCause();
-
-        if (rootCause instanceof XSSViolationException) {
+        if (rootCause instanceof IllegalArgumentException) {
             ErrorResponse errorResponse = new ErrorResponse(
                     LocalDateTime.now().toString(),
                     HttpStatus.BAD_REQUEST.value(),
@@ -32,20 +26,17 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
             );
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
-
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now().toString(),
                 HttpStatus.BAD_REQUEST.value(),
                 "Invalid request payload.",
                 null
         );
-
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(XSSViolationException.class)
-    public ResponseEntity<ErrorResponse> handleXssViolation(
-            XSSViolationException ex,
+    @ExceptionHandler(IllegalArgumentException.class)
+    public final ResponseEntity<ErrorResponse> handleIllegalArgumentException(
+            IllegalArgumentException ex,
             WebRequest request) {
 
         ErrorResponse errorResponse = new ErrorResponse(
@@ -57,4 +48,5 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
 }
